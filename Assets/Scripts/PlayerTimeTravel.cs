@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 
 public class PlayerTimeTravel : MonoBehaviour
 {
+
     private LinkedList<PlayerState> _playerStates; //FIFO
     private int _playerStatesMaxLength;
     [SerializeField] private float _maxTimeTravel = 3;
