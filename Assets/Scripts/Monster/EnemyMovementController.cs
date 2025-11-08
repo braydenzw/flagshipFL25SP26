@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class EnemyMovementController : MonoBehaviour
 {
+    public enum Phase {
+        Roam, Search, Pause, Chase
+    }
+
     public Transform player;
-    public float normalMoveSpeed = 2f;
+    public float normalMoveSpeed = 1.5f;
     public float chasingMoveSpeed = 6f;
-    public float turnSpeed = 4f;
-    public float viewDistance = 10f;
+    public float turnSpeed = 5f;
+    public float viewDistance = 11f;
     public float viewAngle = 60f;
     public float roamRadius = 3f;
 
@@ -19,29 +23,66 @@ public class EnemyMovementController : MonoBehaviour
     public LayerMask obstacleMask;
 
     [Header("Pause After Roam")]
-    private Coroutine afterRoam;
-    public float pauseAfterRoamChance = .2f;
+    public float pauseAfterRoamChance = .3f;
     public float afterRoamPause = 2f;
+
+    [Header("Search")]
+    public float searchAfterRoamChance = 0.2f;
+    public float beforeSearchPause = 1f;
+    public float searchTime = 2f;
+    public float afterSearchTime = 1f;
     public float pauseSpinSpeed = 20f;
+
+    [Header("Player Chase")]
+    public float losePlayerChance = 0.3f;
+    public float losePlayerInterval = 1f;
+    private Coroutine losePlayerLoop = null;
 
     private Rigidbody rb;
     private Vector3 roamTarget;
+    private Phase phase;
 
     void Start() {
+        phase = Phase.Roam;
         rb = GetComponent<Rigidbody>();
         GenerateRoamPoint();
     }
 
     public void FixedUpdate() {
-        if (afterRoam != null) {
-            // after roam state
-            // look behind, but slower
-            transform.Rotate(Vector3.up * pauseSpinSpeed * Time.fixedDeltaTime);
-        } else if (CanSeePlayer()) {
-            Debug.Log("CHASING PLAYER");
-            MoveTowards(player.position, chasingMoveSpeed);
-        } else {
-            Roam();
+        switch (phase) {
+            case Phase.Roam:
+                Roam();
+                if (CanSeePlayer()) {
+                    phase = Phase.Chase;
+                }
+                break;
+            case Phase.Search:
+                transform.Rotate(Vector3.up * pauseSpinSpeed * Time.fixedDeltaTime);
+                if (CanSeePlayer()) {
+                    phase = Phase.Chase;
+                }
+                break;
+            case Phase.Chase:
+                if (losePlayerLoop == null) {
+                    losePlayerLoop = StartCoroutine(LosePlayer());
+                }
+                MoveTowards(player.position, chasingMoveSpeed);
+                break;
+            case Phase.Pause:
+                break;
+        }
+    }
+    
+    public IEnumerator LosePlayer() {
+        while(true) {
+            yield return new WaitForSeconds(losePlayerInterval);
+            if (!CanSeePlayer() && Random.Range(0, 1f) <= losePlayerChance) {
+                GenerateRoamPoint();
+                StopCoroutine(losePlayerLoop);
+                losePlayerLoop = null;
+                phase = Phase.Roam;
+                Debug.Log("Lost player...");
+            }
         }
     }
 
@@ -72,28 +113,33 @@ public class EnemyMovementController : MonoBehaviour
     }
 
     public void Roam() {
-        if(afterRoam != null) { return; } // just wait
         if (Vector3.Distance(transform.position, roamTarget) < 1f) {
             // hit roam point
-            afterRoam = StartCoroutine(PauseBeforeRoamResume());
+            StartCoroutine(PauseBeforeRoamResume());
         }
         MoveTowards(roamTarget, normalMoveSpeed);
     }
     
     private IEnumerator PauseBeforeRoamResume() {
+        phase = Phase.Pause;
         if (Random.Range(0, 1f) <= pauseAfterRoamChance) {
             yield return new WaitForSeconds(afterRoamPause);
-            GenerateRoamPoint();
-
-            afterRoam = null;
-        } else {
-            GenerateRoamPoint();
-            afterRoam = null;
         }
+        
+        if (Random.Range(0, 1f) <= searchAfterRoamChance) {
+            yield return new WaitForSeconds(beforeSearchPause);
+            phase = Phase.Search;
+            yield return new WaitForSeconds(searchTime);
+            phase = Phase.Pause;
+            yield return new WaitForSeconds(afterSearchTime);
+        }
+        
+        GenerateRoamPoint();
+        phase = Phase.Roam;
     }
 
     public void GenerateRoamPoint() {
-        Vector3 randomDir = Random.insideUnitSphere * roamRadius;
+        Vector3 randomDir = Random.insideUnitSphere * roamRadius * Random.Range(0.5f, 1.5f);
         randomDir.y = 0;
         roamTarget = transform.position + randomDir;
         Debug.Log("New roam point: " + roamTarget);

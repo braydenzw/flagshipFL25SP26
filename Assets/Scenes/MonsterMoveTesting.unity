@@ -576,12 +576,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1109450965}
-  normalMoveSpeed: 2.7
+  normalMoveSpeed: 2.4
   chasingMoveSpeed: 4.8
-  turnSpeed: 4
+  turnSpeed: 5
   viewDistance: 12
-  viewAngle: 40
-  roamRadius: 7
+  viewAngle: 60
+  roamRadius: 6
   sensorDistance: 2
   sensorAngle: 30
   sensorCount: 3
@@ -589,8 +589,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   pauseAfterRoamChance: 0.2
-  afterRoamPause: 3
-  pauseSpinSpeed: 65
+  afterRoamPause: 0.4
+  searchAfterRoamChance: 0.2
+  beforeSearchPause: 1
+  searchTime: 5
+  afterSearchTime: 0.5
+  pauseSpinSpeed: 67
+  losePlayerChance: 0.5
+  losePlayerInterval: 1
 --- !u!1 &567998983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,7 +1041,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.5, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1272860418}
