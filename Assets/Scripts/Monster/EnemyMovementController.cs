@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovementController : MonoBehaviour
 {
     public enum Phase {
-        Roam, Search, Pause, Chase
+        Roam, Search, Pause, Chase, TimeTravel
     }
 
     public Transform player;
@@ -35,9 +36,19 @@ public class EnemyMovementController : MonoBehaviour
 
     [Header("Player Chase")]
     public float losePlayerChance = 0.3f;
-    public float losePlayerInterval = 1f;
+    public float losePlayerInterval = 0.8f;
     private Coroutine losePlayerLoop = null;
 
+    [Header("Time Travel")]
+    public float timeTravelChance = 0.2f;
+    public int minSteps = 2;
+    public int maxSteps = 5;
+    public float timeTravelSpinVelocity = 4000f;
+    public float timeTravelTime = 2.5f; // time it takes to do it
+    private Queue<Vector3> pastPositions;
+    private Queue<Vector3> futurePositions;
+
+    private Coroutine temp;
     private Rigidbody rb;
     private Vector3 roamTarget;
     private Phase phase;
@@ -45,10 +56,17 @@ public class EnemyMovementController : MonoBehaviour
     void Start() {
         phase = Phase.Roam;
         rb = GetComponent<Rigidbody>();
+        pastPositions = new Queue<Vector3>();
+        futurePositions = new Queue<Vector3>();
         GenerateRoamPoint();
     }
 
     public void FixedUpdate() {
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     StopCoroutine("DoTimeTravel");
+        //     StartCoroutine("DoTimeTravel");
+        // }
         switch (phase) {
             case Phase.Roam:
                 Roam();
@@ -63,10 +81,21 @@ public class EnemyMovementController : MonoBehaviour
                 }
                 break;
             case Phase.Chase:
+                if (temp != null) {
+                    StopCoroutine(temp);
+                    temp = null;
+                }
                 if (losePlayerLoop == null) {
                     losePlayerLoop = StartCoroutine(LosePlayer());
                 }
                 MoveTowards(player.position, chasingMoveSpeed);
+                break;
+            case Phase.TimeTravel:
+                if (temp != null) {
+                    StopCoroutine(temp);
+                    temp = null;
+                }
+                transform.Rotate(Vector3.up * timeTravelSpinVelocity * Time.fixedDeltaTime);
                 break;
             case Phase.Pause:
                 break;
@@ -77,11 +106,13 @@ public class EnemyMovementController : MonoBehaviour
         while(true) {
             yield return new WaitForSeconds(losePlayerInterval);
             if (!CanSeePlayer() && Random.Range(0, 1f) <= losePlayerChance) {
-                GenerateRoamPoint();
+                Debug.Log("Lost player...");
                 StopCoroutine(losePlayerLoop);
                 losePlayerLoop = null;
+                pastPositions.Enqueue(transform.position); // save this position as meaningful
+                
+                GenerateRoamPoint();
                 phase = Phase.Roam;
-                Debug.Log("Lost player...");
             }
         }
     }
@@ -115,13 +146,43 @@ public class EnemyMovementController : MonoBehaviour
     public void Roam() {
         if (Vector3.Distance(transform.position, roamTarget) < 1f) {
             // hit roam point
-            StartCoroutine(PauseBeforeRoamResume());
+            temp = StartCoroutine(PauseBeforeRoamResume());
         }
         MoveTowards(roamTarget, normalMoveSpeed);
     }
     
-    private IEnumerator PauseBeforeRoamResume() {
+    private IEnumerator DoTimeTravel() {
+        Debug.Log("doing time travel...");
+        phase = Phase.TimeTravel;
+        yield return new WaitForSeconds(timeTravelTime);
+        Vector2 pos = transform.position;
+
+        if (Random.Range(0, 1f) < 0.5f) {
+            for (int i = 0; i < Mathf.Max(pastPositions.Count - 1, Random.Range(minSteps, maxSteps)); i++) {
+                if (pastPositions.Count > 0) {
+                    Debug.Log("Pop past pos");
+                    pos = pastPositions.Dequeue();
+                    futurePositions.Enqueue(pos); // going backwards, so this is now a futurePos
+                }
+            }
+        } else {
+            for (int i = 0; i < Mathf.Max(futurePositions.Count -1, Random.Range(minSteps, maxSteps)); i++) {
+                if (futurePositions.Count > 0) {
+                    Debug.Log("Pop future pos");
+                    pos = futurePositions.Dequeue();
+                    pastPositions.Enqueue(pos); // going forwards, so this is now a pastPos
+                }
+            }
+        }
+        transform.position = pos;
+        pastPositions.Enqueue(transform.position);
+        GenerateRoamPoint();
+        phase = Phase.Roam;
+    }
+    
+    public IEnumerator PauseBeforeRoamResume() {
         phase = Phase.Pause;
+        pastPositions.Enqueue(transform.position);
         if (Random.Range(0, 1f) <= pauseAfterRoamChance) {
             yield return new WaitForSeconds(afterRoamPause);
         }
@@ -134,16 +195,25 @@ public class EnemyMovementController : MonoBehaviour
             yield return new WaitForSeconds(afterSearchTime);
         }
         
-        GenerateRoamPoint();
-        phase = Phase.Roam;
+        // if failed search, consider time traveling backwards
+        if (Random.Range(0, 1f) <= timeTravelChance) {
+            StartCoroutine(DoTimeTravel());
+        } else {
+            GenerateRoamPoint();
+            if (futurePositions.Count > 0) {
+                futurePositions.Dequeue(); // creating new future...!
+            }
+            phase = Phase.Roam;
+        }
     }
 
     public void GenerateRoamPoint() {
         Vector3 randomDir = Random.insideUnitSphere * roamRadius * Random.Range(0.5f, 1.5f);
         randomDir.y = 0;
         roamTarget = transform.position + randomDir;
-        Debug.Log("New roam point: " + roamTarget);
     }
+    
+    
 
     Vector3 ApplySensorAvoidance(Vector3 moveDir) {
         Vector3 avoidance = Vector3.zero;
