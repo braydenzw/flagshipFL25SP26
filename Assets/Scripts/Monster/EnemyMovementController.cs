@@ -75,7 +75,9 @@ public class EnemyMovementController : MonoBehaviour
                 }
                 break;
             case Phase.Search:
-                transform.Rotate(Vector3.up * pauseSpinSpeed * Time.fixedDeltaTime);
+                rb.MoveRotation(
+                    rb.rotation * Quaternion.Euler(0f, pauseSpinSpeed * Time.fixedDeltaTime, 0f)
+                );
                 if (CanSeePlayer()) {
                     phase = Phase.Chase;
                 }
@@ -95,7 +97,9 @@ public class EnemyMovementController : MonoBehaviour
                     StopCoroutine(temp);
                     temp = null;
                 }
-                transform.Rotate(Vector3.up * timeTravelSpinVelocity * Time.fixedDeltaTime);
+                rb.MoveRotation(
+                    rb.rotation * Quaternion.Euler(0f, timeTravelSpinVelocity * Time.fixedDeltaTime, 0f)
+                );
                 break;
             case Phase.Pause:
                 break;
@@ -122,7 +126,7 @@ public class EnemyMovementController : MonoBehaviour
         float distance = dirToPlayer.magnitude;
         if (distance > viewDistance) { return false; }
 
-        float angle = Vector3.Angle(transform.forward, dirToPlayer);
+        float angle = Vector3.Angle(rb.transform.forward, dirToPlayer);
         if (angle > viewAngle / 2f) { return false; }
 
         if (Physics.Raycast(transform.position, dirToPlayer.normalized, out RaycastHit hit, viewDistance)) {
@@ -132,19 +136,26 @@ public class EnemyMovementController : MonoBehaviour
     }
 
     public void MoveTowards(Vector3 target, float speed) {
-        Vector3 dir = (target - transform.position).normalized;
+        Vector3 dir = (target - rb.position).normalized;
         dir = ApplySensorAvoidance(dir);
+
+        // flatten to only move around horizontal (dont break freeze rotation)
+        dir.y = 0f;
+        if (dir.sqrMagnitude > 0.001f) {
+            dir.Normalize();
+        }
 
         // Smoothly rotate toward desired direction
         Quaternion lookRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, turnSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(
+            Quaternion.Slerp(rb.rotation, lookRot, turnSpeed * Time.fixedDeltaTime)
+        );
 
-        rb.angularVelocity = Vector3.zero;
-        rb.MovePosition(rb.position + transform.forward * speed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * rb.transform.forward);
     }
 
     public void Roam() {
-        if (Vector3.Distance(transform.position, roamTarget) < 1f) {
+        if (Vector3.Distance(rb.position, roamTarget) < 1f) {
             // hit roam point
             temp = StartCoroutine(PauseBeforeRoamResume());
         }
@@ -174,8 +185,11 @@ public class EnemyMovementController : MonoBehaviour
                 }
             }
         }
-        transform.position = pos;
-        pastPositions.Enqueue(transform.position);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.MovePosition(pos);
+
+        pastPositions.Enqueue(rb.position);
         GenerateRoamPoint();
         phase = Phase.Roam;
     }
@@ -220,7 +234,7 @@ public class EnemyMovementController : MonoBehaviour
         int hitCount = 0;
         if (
             Physics.Raycast(transform.position + Vector3.up * 0.2f,
-            transform.forward, out RaycastHit hit,
+            rb.transform.forward, out RaycastHit hit,
             sensorDistance, obstacleMask)
         )
         {
@@ -234,7 +248,7 @@ public class EnemyMovementController : MonoBehaviour
             float angleOffset = sensorAngle * i / sensorCount;
 
             // Left
-            Vector3 leftDir = Quaternion.AngleAxis(-angleOffset, Vector3.up) * transform.forward;
+            Vector3 leftDir = Quaternion.AngleAxis(-angleOffset, Vector3.up) * rb.transform.forward;
             if (Physics.Raycast(transform.position + Vector3.up * 0.2f, leftDir, out hit,
                 sensorDistance / 2f, obstacleMask)
             ) {
@@ -243,7 +257,7 @@ public class EnemyMovementController : MonoBehaviour
             }
 
             // Right
-            Vector3 rightDir = Quaternion.AngleAxis(angleOffset, Vector3.up) * transform.forward;
+            Vector3 rightDir = Quaternion.AngleAxis(angleOffset, Vector3.up) * rb.transform.forward;
             if (Physics.Raycast(transform.position + Vector3.up * 0.2f, rightDir, out hit,
                 sensorDistance / 2f, obstacleMask)
             ) {
