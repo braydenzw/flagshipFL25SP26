@@ -94,6 +94,7 @@
 //}
 
 // PlayerInteraction.cs
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -141,7 +142,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             // I set it to right click, but it could also be a keypress for something like 'q'.
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.Q))
             {
                 ThrowItem();
             }
@@ -188,6 +189,13 @@ public class PlayerInteraction : MonoBehaviour
         heldItemRb = null;
 
         UpdateInteractionImage(3);
+        StartCoroutine(ResetInteractionImage(0.5f));
+    }
+
+    private IEnumerator ResetInteractionImage(float time)
+    {
+        yield return new WaitForSeconds(time);
+        UpdateInteractionImage(1);
     }
 
     void DropItem()

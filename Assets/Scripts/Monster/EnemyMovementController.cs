@@ -40,7 +40,7 @@ public class EnemyMovementController : MonoBehaviour
     private Coroutine losePlayerLoop = null;
 
     [Header("Time Travel")]
-    public float timeTravelChance = 0.2f;
+    public float timeTravelChance = 0.1f;
     public int minSteps = 2;
     public int maxSteps = 5;
     public float timeTravelSpinVelocity = 4000f;
@@ -151,7 +151,9 @@ public class EnemyMovementController : MonoBehaviour
             Quaternion.Slerp(rb.rotation, lookRot, turnSpeed * Time.fixedDeltaTime)
         );
 
-        rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * rb.transform.forward);
+        var move = Vector3.MoveTowards(rb.position, rb.position + rb.transform.forward, speed * Time.fixedDeltaTime);
+        rb.MovePosition(move);
+        // rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * rb.transform.forward);
     }
 
     public void Roam() {
@@ -187,7 +189,7 @@ public class EnemyMovementController : MonoBehaviour
         }
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.MovePosition(pos);
+        rb.position = pos;
 
         pastPositions.Enqueue(rb.position);
         GenerateRoamPoint();
@@ -238,6 +240,7 @@ public class EnemyMovementController : MonoBehaviour
             sensorDistance, obstacleMask)
         )
         {
+            Debug.Log("GENERATING NEW ROAM FOR SENSOR AVOID");
             GenerateRoamPoint(); // if going to hit wall/get stuck, just go somewhere else
             avoidance += hit.normal;
             hitCount++;
