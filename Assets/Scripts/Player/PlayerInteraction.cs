@@ -1,157 +1,136 @@
-//// PlayerInteraction.cs
-//using UnityEngine;
-//using static UnityEditor.Progress;
-
-//public class PlayerInteraction : MonoBehaviour
-//{
-//    [Header("Interaction Settings")]
-//    public Transform playerCamera;
-//    public float pickupRange = 3f;
-//    public KeyCode pickupKey = KeyCode.E;
-//    public KeyCode dropKey = KeyCode.Q;
-//    // I just set the left mouse button as how to throw items, but there's this if you want a keystroke: public KeyCode throwKey = KeyCode.R;
-//    public float throwPower = 10f;
-//    public Transform holdPoint;
-
-//    private GameObject heldItem;
-//    private Rigidbody heldItemRb;
-
-//    void Update()
-//    {
-//        if (heldItem == null)
-//        {
-//            RaycastHit hit;
-//            if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, pickupRange))
-//            {
-//                if (hit.transform.GetComponent<Item>() != null)
-//                {
-//                    if (Input.GetKeyDown(pickupKey))
-//                    {
-//                        PickupItem(hit.transform.gameObject);
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            if (Input.GetKeyDown(dropKey))
-//            {
-//                DropItem();
-//            }
-//            if (Input.GetMouseButton(0))
-//            {
-//                ThrowItem();
-//            }
-//        }
-//    }
-
-//    void PickupItem(GameObject item)
-//    {
-//        heldItem = item;
-//        heldItemRb = item.GetComponent<Rigidbody>();
-
-//        heldItemRb.isKinematic = true;
-//        heldItem.transform.SetParent(holdPoint);
-//        heldItem.transform.localPosition = Vector3.zero;
-//        heldItem.transform.localRotation = Quaternion.identity;
-
-//        if (item.GetComponent<Collider>() != null)
-//        {
-//            item.GetComponent<Collider>().enabled = false;
-//        }
-//    }
-
-//    void ThrowItem()
-//    {
-//        heldItemRb.isKinematic = false;
-//        heldItem.transform.SetParent(null);
-
-//        if (heldItem.GetComponent<Collider>() != null)
-//        {
-//            heldItem.GetComponent<Collider>().enabled = true;
-//        }
-
-//        heldItemRb.AddForce(playerCamera.forward * throwPower, ForceMode.Impulse);
-
-//        heldItem = null;
-//        heldItemRb = null;
-//    }
-//    void DropItem()
-//    {
-//        heldItemRb.isKinematic = false;
-//        heldItem.transform.SetParent(null);
-
-//        if (heldItem.GetComponent<Collider>() != null)
-//        {
-//            heldItem.GetComponent<Collider>().enabled = true;
-//        }
-
-//        heldItemRb.AddForce(playerCamera.forward, ForceMode.Impulse);
-
-//        heldItem = null;
-//        heldItemRb = null;
-//    }
-//}
-
-// PlayerInteraction.cs
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interaction Settings")]
     public Transform playerCamera;
     public float pickupRange = 3f;
-
-    // public KeyCode throwKey = KeyCode.Q;
-    public float throwPower = 10f;
     public Transform holdPoint;
+    public float maxDoorHoldDistance = 4f;
+
+    [Header("Throw Settings")]
+    public float minThrowPower = 1f;
+    public float maxThrowPower = 10f;
+    public float maxChargeTime = 1.5f;
+    private float currentChargeTime;
+    private bool isCharging = false;
 
     private GameObject heldItem;
     private Rigidbody heldItemRb;
+    private Door currentlyHeldDoor;
 
     [Header("UI Settings")]
     public RawImage interactionStateImage;
     public Texture emptyHandTexture;
     public Texture holdingItemTexture;
     public Texture throwingItemTexture;
+    public Texture doorGrabTexture;
+    public Slider chargeBar;
 
     void Start()
     {
         UpdateInteractionImage(1);
+
+        if (chargeBar != null)
+        {
+            chargeBar.gameObject.SetActive(false);
+            chargeBar.minValue = 0;
+            chargeBar.maxValue = 1;
+        }
     }
 
     void Update()
     {
+        // Door controls
+        if (currentlyHeldDoor != null)
+        {
+            float distanceToDoor = Vector3.Distance(playerCamera.position, currentlyHeldDoor.transform.position);
+
+            if (Input.GetMouseButtonUp(0) || distanceToDoor > maxDoorHoldDistance)
+            {
+                currentlyHeldDoor = null;
+                UpdateInteractionImage(1);
+                return;
+            }
+
+            float mouseX = -Input.GetAxis("Mouse X");
+            float mouseY = -Input.GetAxis("Mouse Y");
+            float mouseMovement = mouseX + mouseY;
+
+            currentlyHeldDoor.ManipulateDoor(mouseMovement);
+            return;
+        }
+
+        // Pickup controls
         if (heldItem == null)
         {
             RaycastHit hit;
             if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, pickupRange))
             {
-                if (hit.transform.GetComponent<Item>() != null)
+                Item itemScript = hit.transform.GetComponent<Item>();
+                Door doorScript = hit.transform.GetComponentInParent<Door>();
+
+                if (itemScript != null)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
                         PickupItem(hit.transform.gameObject);
                     }
                 }
+                else if (doorScript != null)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        currentlyHeldDoor = doorScript;
+                        UpdateInteractionImage(4);
+                    }
+                }
             }
         }
+
         else
         {
-            // I set it to right click, but it could also be a keypress for something like 'q'.
-            if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.Q))
-            {
-                ThrowItem();
-            }
+            HandleThrowingLogic();
 
             if (Input.GetMouseButtonUp(0))
             {
+                CancelCharge();
                 DropItem();
             }
         }
+    }
+
+    private void HandleThrowingLogic()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            isCharging = true;
+            currentChargeTime = 0f;
+            if (chargeBar != null) chargeBar.gameObject.SetActive(true);
+        }
+
+        if (isCharging)
+        {
+            currentChargeTime += Time.deltaTime;
+            float chargePercent = Mathf.Clamp01(currentChargeTime / maxChargeTime);
+
+            if (chargeBar != null)
+            {
+                chargeBar.value = chargePercent;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(1) && isCharging)
+        {
+            ThrowItem();
+        }
+    }
+
+    private void CancelCharge()
+    {
+        isCharging = false;
+        if (chargeBar != null) chargeBar.gameObject.SetActive(false);
     }
 
     void PickupItem(GameObject item)
@@ -159,7 +138,10 @@ public class PlayerInteraction : MonoBehaviour
         heldItem = item;
         heldItemRb = item.GetComponent<Rigidbody>();
 
-        heldItemRb.isKinematic = true;
+        if (heldItemRb != null)
+        {
+            heldItemRb.isKinematic = true;
+        }
 
         heldItem.transform.SetParent(holdPoint);
         heldItem.transform.localPosition = Vector3.zero;
@@ -175,19 +157,17 @@ public class PlayerInteraction : MonoBehaviour
 
     void ThrowItem()
     {
-        heldItemRb.isKinematic = false;
-        heldItem.transform.SetParent(null);
+        float chargePercent = Mathf.Clamp01(currentChargeTime / maxChargeTime);
+        float finalPower = Mathf.Lerp(minThrowPower, maxThrowPower, chargePercent);
 
-        if (heldItem.GetComponent<Collider>() != null)
+        if (heldItemRb != null)
         {
-            heldItem.GetComponent<Collider>().enabled = true;
+            heldItemRb.isKinematic = false;
+            heldItemRb.AddForce(playerCamera.forward * finalPower, ForceMode.Impulse);
         }
 
-        heldItemRb.AddForce(playerCamera.forward * throwPower, ForceMode.Impulse);
-
-        heldItem = null;
-        heldItemRb = null;
-
+        ResetItemReferences();
+        CancelCharge();
         UpdateInteractionImage(3);
         StartCoroutine(ResetInteractionImage(0.5f));
     }
@@ -200,10 +180,22 @@ public class PlayerInteraction : MonoBehaviour
 
     void DropItem()
     {
-        heldItemRb.isKinematic = false;
+        if (heldItemRb != null)
+        {
+            heldItemRb.isKinematic = false;
+            heldItemRb.AddForce(playerCamera.forward * 2f, ForceMode.Impulse);
+        }
+
+        ResetItemReferences();
+        UpdateInteractionImage(1);
+    }
+
+    private void ResetItemReferences()
+    {
+        if (heldItem == null) return;
+
         heldItem.transform.SetParent(null);
 
-        // Re-enable the collider
         if (heldItem.GetComponent<Collider>() != null)
         {
             heldItem.GetComponent<Collider>().enabled = true;
@@ -211,25 +203,26 @@ public class PlayerInteraction : MonoBehaviour
 
         heldItem = null;
         heldItemRb = null;
-
-        UpdateInteractionImage(1);
     }
+
     void UpdateInteractionImage(int isHolding)
     {
-        if (interactionStateImage == null) return;
+        if (interactionStateImage == null)
+        {
+            return;
+            }
 
-        if (isHolding == 1)
-        {
-            interactionStateImage.texture = emptyHandTexture;
+        if (isHolding == 1) { 
+            interactionStateImage.texture = emptyHandTexture; // Idle hands
+            }
+        else if (isHolding == 2) { 
+            interactionStateImage.texture = holdingItemTexture; // Grabbing hands
+            }
+        else if (isHolding == 3) { 
+            interactionStateImage.texture = throwingItemTexture; // Throwing hand
+            }
+        else if (isHolding == 4) { 
+            interactionStateImage.texture = doorGrabTexture; // Door-grabbing hand
+            }
         }
-        else if (isHolding == 2)
-        {
-            interactionStateImage.texture = holdingItemTexture;
-        }
-
-        else if (isHolding == 3)
-        {
-            interactionStateImage.texture = throwingItemTexture;
-        }
-    }
 }
