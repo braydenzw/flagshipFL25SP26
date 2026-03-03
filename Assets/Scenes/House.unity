@@ -7660,6 +7660,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1935289795}
+  - {fileID: 1557916760}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &551797318
@@ -26406,6 +26407,37 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1557916759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1557916760}
+  m_Layer: 0
+  m_Name: navtarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1557916760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557916759}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 551797317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1599547433
 Mesh:
   m_ObjectHideFlags: 0
@@ -29780,9 +29812,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1018664272722485354, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
+      propertyPath: m_Name
+      value: eyes
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_Name
-      value: timewraith_again
+      value: timewraith_again (don't touch)
       objectReference: {fileID: 0}
     - target: {fileID: 8632055958874330854, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_LocalPosition.y
