@@ -3620,6 +3620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7bb979a395b0e4a8567ef090fe42d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  positionSetOnTravel: 1
+  velocitySetOnTravel: 1
 --- !u!1 &1375175363
 GameObject:
   m_ObjectHideFlags: 0
@@ -4971,6 +4973,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7bb979a395b0e4a8567ef090fe42d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  positionSetOnTravel: 1
+  velocitySetOnTravel: 1
 --- !u!1 &1675398024
 GameObject:
   m_ObjectHideFlags: 0
@@ -5978,6 +5982,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7bb979a395b0e4a8567ef090fe42d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  positionSetOnTravel: 1
+  velocitySetOnTravel: 1
 --- !u!1 &1959393026
 GameObject:
   m_ObjectHideFlags: 0

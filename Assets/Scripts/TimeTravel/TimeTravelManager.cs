@@ -12,11 +12,18 @@ public class TimeTravelManager : MonoBehaviour
     private TimeTravelable[] timeTravelObj;
     
     private int timeTravelDistance = 0; // Num frames to travel backwards in time by
-    private int currentFrame = 0; // Current number of frames in timeline
+    private int currentInterval = 0; // Current number of frames in timeline
     private bool timeTravelCalled = false; // Bool to ensure button down detection with fixedUpdate
-    private readonly int timeLogInterval = 250; // How often to record time travel, measured in fixed update ticks
-    private int currentInterval = 0; // var to track how often to log time travel
+    [SerializeField] private readonly int timeLogInterval = 50; // How often to record time travel, measured in fixed update ticks
+    [SerializeField] private readonly int maxIntervalsTimeTravelable = 6;
+    private int frameTracking = 0; // var to track how often to log time travel
     private float currentTime = 0;
+
+
+    private float scrollNecessary = 0.1f;
+    private float scrollTotal = 0;
+    private float noScrollTime = 0;
+    private float maxNoScrollTime = 0.5f;
     
     [Header("Clock Displays")]
     [SerializeField] private TextMeshProUGUI currentTimeText;
@@ -39,18 +46,45 @@ public class TimeTravelManager : MonoBehaviour
         // Update general world clock
         currentTime += Time.deltaTime;
         SetClock();
-        
+
         // Update time travel clock
-        if (Input.GetKeyDown(KeyCode.G)) timeTravelDistance++;
-        if(Input.GetKeyDown(KeyCode.H)) timeTravelDistance--;
-        timeTravelDistance = Mathf.Clamp(timeTravelDistance, 0, currentFrame);
-        int timeToDisplay = (int)((timeTravelDistance) * (timeLogInterval * Time.fixedDeltaTime));
+        float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollAmount == 0)
+        {
+            noScrollTime += Time.deltaTime;
+            if (noScrollTime > maxNoScrollTime)
+            {
+                scrollAmount = 0;
+                noScrollTime = 0;
+            }
+        }
+        else
+        {
+            scrollTotal += scrollAmount;
+            noScrollTime = 0;
+        }
+        Debug.Log(scrollTotal);
+        if(scrollTotal > scrollNecessary) 
+        {
+            timeTravelDistance--;
+            scrollTotal = 0;
+        }
+        if(scrollTotal < -scrollNecessary) 
+        {
+            timeTravelDistance++;
+            scrollTotal = 0;
+        }
+        
+        
+        
+        timeTravelDistance = Mathf.Clamp(timeTravelDistance, 0, currentInterval);
+        int timeToDisplay = (int)((currentInterval - timeTravelDistance) * (timeLogInterval * Time.fixedDeltaTime));
         if (timeToDisplay != 0) timeToDisplay++; // tbh I don't know why this is necessary but it is, don't remove
         TimeSpan t = TimeSpan.FromSeconds(timeToDisplay);
-        travelDestinationText.text = '-' + t.ToString(@"mm\:ss");
+        travelDestinationText.text = "Time Destination: "+ t.ToString(@"mm\:ss");
         
         // Check time travel button
-        if(Input.GetKeyDown(KeyCode.T)) timeTravelCalled = true;
+        if(Input.GetKeyDown(KeyCode.LeftShift)) timeTravelCalled = true;
     }
 
     // Sets time of clock
@@ -62,16 +96,17 @@ public class TimeTravelManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        currentInterval++;
-        if (currentInterval >= timeLogInterval)
+        frameTracking++;
+        if (frameTracking >= timeLogInterval)
         {
             // Log new travel frame
-            currentInterval = 0;
+            frameTracking = 0;
             foreach (TimeTravelable obj in timeTravelObj)
             {
                 obj.LogFrame();
             }
-            currentFrame++;
+            currentInterval++;
+            timeTravelDistance++;
         }
         
         
@@ -84,7 +119,7 @@ public class TimeTravelManager : MonoBehaviour
 
     void TimeTravel()
     {
-        int timeTravelLocation = currentFrame - timeTravelDistance;
+        int timeTravelLocation = currentInterval - timeTravelDistance;
         
         // Time traveling each obj
         foreach (TimeTravelable obj in timeTravelObj)
@@ -93,10 +128,11 @@ public class TimeTravelManager : MonoBehaviour
         }
         
         // Resetting to new time
-        currentFrame = timeTravelLocation;
-        currentTime = currentFrame * timeLogInterval * Time.fixedDeltaTime;
-        currentInterval = 0;
+        currentInterval = timeTravelLocation;
+        currentTime = currentInterval * timeLogInterval * Time.fixedDeltaTime;
+        frameTracking = 0;
         SetClock();
         timeTravelCalled = false;
+        timeTravelDistance = 0;
     }
 }
