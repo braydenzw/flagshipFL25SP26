@@ -13,13 +13,14 @@ public class ButtonScript : MonoBehaviour, IInteractable
     // if not then clicked will update after animation done
     float outY;
     float speed = 15;
-    bool interacting;
+    bool interacting; 
     
-    void Start()
+    protected virtual void Start()
     {
         outY = transform.localPosition.y;
         interacting = false;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -30,6 +31,7 @@ public class ButtonScript : MonoBehaviour, IInteractable
         }
         if (interacting)
         {
+            Output();
             transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, 0, 0), speed * Time.deltaTime);
         }
         else
@@ -37,7 +39,7 @@ public class ButtonScript : MonoBehaviour, IInteractable
             transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, outY, 0), speed * Time.deltaTime);
 
         }
-
+        
         interacting = false;
     }
 
@@ -45,7 +47,7 @@ public class ButtonScript : MonoBehaviour, IInteractable
     {
         interacting = true;
     }
-    public void Output()
+    protected virtual void Output()
     {
         
     }

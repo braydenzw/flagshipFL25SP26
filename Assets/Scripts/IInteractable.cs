@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    void Interact(); // Method to be called when interaction occurs
+    abstract void Interact(); // Method to be called when interaction occurs
     
 }

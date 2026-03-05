@@ -51,7 +51,7 @@ public class LeverScript : MonoBehaviour, IInteractable
 
     void Rotate()
     {
-        transform.rotation = Quaternion.Slerp(transform.localRotation, next_angle_transform, rotation_speed * Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, next_angle_transform, rotation_speed * Time.deltaTime);
     }
 
     public void Interact()
