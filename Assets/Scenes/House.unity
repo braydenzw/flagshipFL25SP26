@@ -28059,6 +28059,8 @@ GameObject:
   - component: {fileID: 1664252431}
   - component: {fileID: 1664252432}
   - component: {fileID: 1664252433}
+  - component: {fileID: 1664252435}
+  - component: {fileID: 1664252434}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -28276,6 +28278,36 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &1664252434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664252424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514d89a848f476f4683a46a422a7e666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  promptText: {fileID: 0}
+--- !u!114 &1664252435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664252424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41a4c9de92b9324395a299473f07872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  interactionRange: 3
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!43 &1689153411
 Mesh:
   m_ObjectHideFlags: 0
