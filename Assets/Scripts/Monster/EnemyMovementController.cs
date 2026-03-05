@@ -275,15 +275,4 @@ public class EnemyMovementController : MonoBehaviour
         }
         return moveDir.normalized;
     }
-
-    private bool isDead = false;
-    public void Die()
-    {
-        if (isDead) return;
-        isDead = true;
-
-        StopAllCoroutines();
-        //any death animation
-        gameObject.SetActive(false);   // or Destroy
-    }
 }
