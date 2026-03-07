@@ -27,17 +27,21 @@ public class EnemyMovementControllerRevamped : MonoBehaviour
     private bool is_searching = false;
     private bool is_chasing = false;
     private bool is_wandering = false;
+    private bool is_attacking = false;
 
     private Vector3 last_known_player_pos;
 
     // parameters
-    private float chase_time = 5;
-    private float search_time = 5;
-    private float wander_time = 3;
-    private float wander_radius = 10;
+    private float chase_time = 5f;
+    private float search_time = 5f;
+    private float wander_time = 3f;
+    private float wander_radius = 10f;
+    private float attack_range = 1.5f;
+    private float attack_cooldown = 2f;
 
     // audio
     [SerializeField] AudioClip foundPlayerClip;
+    [SerializeField] AudioClip attackClip;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +75,12 @@ public class EnemyMovementControllerRevamped : MonoBehaviour
 
             case states.chasing:
                 if (!is_chasing) StartCoroutine(ChasePlayer());
+                float distance_to_player = Vector3.Distance(player.position, transform.position);
+                Debug.Log("distance to player: " + distance_to_player);
+                if (distance_to_player <= attack_range)
+                {
+                    if (!is_attacking) StartCoroutine(Attack());
+                }
                 break;
 
             default:
@@ -175,5 +185,15 @@ public class EnemyMovementControllerRevamped : MonoBehaviour
         last_known_player_pos = player.transform.position;
         state = states.searching;
         is_chasing = false;
+    }
+
+    private IEnumerator Attack()
+    {
+        is_attacking = true;
+        Debug.Log("attacking player");
+        SoundManager.instance.PlaySound(attackClip, transform, 1f);
+        player.gameObject.GetComponent<PlayerHealthController>().takeDamage(gameObject);
+        yield return new WaitForSeconds(attack_cooldown);
+        is_attacking = false;
     }
 }
