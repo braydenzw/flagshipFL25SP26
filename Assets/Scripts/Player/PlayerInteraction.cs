@@ -71,6 +71,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 Item itemScript = hit.transform.GetComponent<Item>();
                 Door doorScript = hit.transform.GetComponentInParent<Door>();
+                IInteractable interactable = hit.transform.GetComponent<IInteractable>();
 
                 if (itemScript != null)
                 {
@@ -85,6 +86,13 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         currentlyHeldDoor = doorScript;
                         UpdateInteractionImage(4);
+                    }
+                }
+                else if (interactable != null)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        interactable.Interact();
                     }
                 }
             }
