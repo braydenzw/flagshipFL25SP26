@@ -36,7 +36,7 @@ public class EnemyMovementControllerRevamped : MonoBehaviour
     private float search_time = 5f;
     private float wander_time = 3f;
     private float wander_radius = 10f;
-    private float attack_range = 1.5f;
+    private float attack_range = 1.8f;
     private float attack_cooldown = 2f;
 
     // audio

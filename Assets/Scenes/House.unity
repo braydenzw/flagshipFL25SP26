@@ -7586,7 +7586,6 @@ GameObject:
   m_Component:
   - component: {fileID: 551797317}
   - component: {fileID: 551797316}
-  - component: {fileID: 551797315}
   - component: {fileID: 551797318}
   - component: {fileID: 551797319}
   m_Layer: 0
@@ -7596,45 +7595,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &551797315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551797314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae450e9570ad4420ebead3682645ac8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1664252425}
-  normalMoveSpeed: 1.5
-  chasingMoveSpeed: 6
-  turnSpeed: 5
-  viewDistance: 11
-  viewAngle: 60
-  roamRadius: 3
-  sensorDistance: 2
-  sensorAngle: 30
-  sensorCount: 3
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 64
-  pauseAfterRoamChance: 0.3
-  afterRoamPause: 2
-  searchAfterRoamChance: 0.2
-  beforeSearchPause: 1
-  searchTime: 2
-  afterSearchTime: 1
-  pauseSpinSpeed: 20
-  losePlayerChance: 0.3
-  losePlayerInterval: 0.8
-  timeTravelChance: 0.1
-  minSteps: 2
-  maxSteps: 5
-  timeTravelSpinVelocity: 4000
-  timeTravelTime: 2.5
 --- !u!54 &551797316
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27277,12 +27237,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 963194228}
   pickupRange: 3
-  throwPower: 10
   holdPoint: {fileID: 558369632}
+  maxDoorHoldDistance: 4
+  minThrowPower: 1
+  maxThrowPower: 10
+  maxChargeTime: 1.5
   interactionStateImage: {fileID: 0}
   emptyHandTexture: {fileID: 2800000, guid: dff1a4e57a7d5e24c84ba96fd3d6058f, type: 3}
   holdingItemTexture: {fileID: 2800000, guid: e3c81086172c15d42999fe4eb4001177, type: 3}
   throwingItemTexture: {fileID: 2800000, guid: 5cb3f5275feb99f488f3e6ba5a0d7bd1, type: 3}
+  doorGrabTexture: {fileID: 0}
+  chargeBar: {fileID: 0}
 --- !u!114 &1664252432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29968,7 +29933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8632055958874330854, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.41
+      value: 434
       objectReference: {fileID: 0}
     - target: {fileID: 8879528566716807029, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_LocalPosition.x
