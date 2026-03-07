@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: a267676b2f8cb05499c556a4228605d4, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 8bd08dd5cd91fef4e99c06b1dbc25d92, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -2009,6 +2009,10 @@ PrefabInstance:
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Color.b
       value: 0.49019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
@@ -6471,6 +6475,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -7331,6 +7343,10 @@ PrefabInstance:
       value: 0.49019608
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
@@ -7655,7 +7671,7 @@ Transform:
   m_GameObject: {fileID: 551797314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.53, z: 0}
+  m_LocalPosition: {x: -8, y: 1.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7677,7 +7693,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -7699,6 +7715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player_detector: {fileID: 1827150987}
   foundPlayerClip: {fileID: 8300000, guid: c91a5c58c11c506449238b52abbae46f, type: 3}
+  attackClip: {fileID: 8300000, guid: d1513e0791684c5408f85d24e6cb0a42, type: 3}
 --- !u!1 &553528550 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f28ac0223bd8746f4aa12fc01e49dc14, type: 3}
@@ -9845,6 +9862,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -10418,6 +10443,10 @@ PrefabInstance:
       value: 0.49019608
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
@@ -10655,6 +10684,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -14336,7 +14373,7 @@ Light:
   m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -20930,6 +20967,10 @@ PrefabInstance:
       value: 0.49019608
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
@@ -26974,6 +27015,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -27444,6 +27493,10 @@ PrefabInstance:
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Color.b
       value: 0.49019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
@@ -29763,6 +29816,10 @@ PrefabInstance:
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Color.b
       value: 0.49019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1973016060344415418, guid: 9bd4858479671ac48b2a57ae42f02441, type: 3}
       propertyPath: m_Shadows.m_Type
@@ -32912,6 +32969,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -33315,6 +33380,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 131774360909060790, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104739641293098594, guid: fd432e2aa7e765c41a6050831e1b1fad, type: 3}
       propertyPath: m_Mesh
       value: 
