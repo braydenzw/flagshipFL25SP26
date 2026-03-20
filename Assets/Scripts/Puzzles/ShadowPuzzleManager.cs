@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
@@ -26,6 +27,7 @@ public class ShadowPuzzleManager : MonoBehaviour
     [SerializeField] Transform camera_anchor_point;
     [SerializeField] Camera main_cam;
     [SerializeField] GameObject player_camera_root;
+    [SerializeField] TextMeshProUGUI instructions; // make sure this is disabled on the instruction UI (DON'T disable the UI GameObject itself)
 
     [Header("the object TO compare to")]
     [SerializeField] GameObject o2; 
@@ -68,8 +70,8 @@ public class ShadowPuzzleManager : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        bool plus = (Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.KeypadPlus));
-        bool minus = (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus));
+        bool plus = (Input.GetKey(KeyCode.Equals)); // + and = are usually the same key 
+        bool minus = (Input.GetKey(KeyCode.Minus));
 
         float sensitivity = rotation_speed * Time.deltaTime;
 
@@ -101,6 +103,8 @@ public class ShadowPuzzleManager : MonoBehaviour
         TogglePlayerControls();
 
         isPlaying = !isPlaying;
+
+        instructions.enabled = !instructions.enabled;
 
         if (isPlaying)
         {
