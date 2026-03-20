@@ -112,7 +112,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleThrowingLogic()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Q))
         {
             isCharging = true;
             currentChargeTime = 0f;
@@ -130,7 +130,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(1) && isCharging)
+        if ((Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.Q)) && isCharging)
         {
             ThrowItem();
         }
