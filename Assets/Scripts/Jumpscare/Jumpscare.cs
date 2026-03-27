@@ -16,6 +16,12 @@ public class ImageFade : MonoBehaviour {
         StartCoroutine(FadeImage());
     }
 
+    public void OnTriggerEnter(Collider c) {
+        if (c.gameObject.tag != "Player") { return; }
+        img.color = new Color(1, 1, 1, 1);
+        StartCoroutine(FadeImage());
+    }
+
     IEnumerator FadeImage() {
         // loop over 1 second backwards
         for (float i = interval; i >= 0; i -= Time.deltaTime) {
