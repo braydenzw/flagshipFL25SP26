@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         bool isTryingToSprint = Input.GetKey(sprintKey);
         bool isMoving = horizontalInput != 0 || verticalInput != 0;
 
-        if (isTryingToSprint && isMoving && isGrounded && currentStamina > 0 && !isExhausted)
+        if (isTryingToSprint && isMoving && currentStamina > 0 && !isExhausted)
         {
             isSprinting = true;
         }
