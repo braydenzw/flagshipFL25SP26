@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerHealthController : MonoBehaviour
 {
     Rigidbody rb;
-    public float knockback = 2f;
+    public float knockback = 10f;
 
     [Header("UI")]
     public RawImage health1;
@@ -28,6 +28,57 @@ public class PlayerHealthController : MonoBehaviour
         health = 3;
     }
 
+    public void takeDamage()
+    {
+        health--;
+        switch (health)
+        {
+            case 2:
+                health3.color = deadColor;
+                break;
+            case 1:
+                health2.color = deadColor;
+                break;
+            default:
+                health1.color = deadColor;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name); // player died, reload
+                return;
+        }
+    }
+
+    // if you want knockback
+    public void takeDamage(GameObject attack_origin)
+    {
+        health--;
+        switch (health)
+        {
+            case 2:
+                health3.color = deadColor;
+                break;
+            case 1:
+                health2.color = deadColor;
+                break;
+            default:
+                health1.color = deadColor;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name); // player died, reload
+                return;
+        }
+
+        // knockback
+        Debug.Log("knockback player");
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            Vector3 direction = transform.position - attack_origin.transform.position;
+            direction.y = 1;
+            rb.AddForce(direction.normalized * knockback, ForceMode.Impulse);
+        }
+    }
+
+
+
+    /*
     void OnCollisionEnter(Collision c) {
         if (c.gameObject.tag == "Enemy"){
             // remove health
@@ -53,4 +104,5 @@ public class PlayerHealthController : MonoBehaviour
             rb.AddForce(dir.normalized * knockback * 10f);
         }   
     }
+    */
 }
