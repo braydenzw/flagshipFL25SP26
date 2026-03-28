@@ -6,6 +6,7 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    //你好
     [Header("Interaction Settings")]
     public Transform playerCamera;
     public float pickupRange = 6f;

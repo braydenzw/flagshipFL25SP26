@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour
 {
-    public string killItemTag = "Muffin";
+    public string muffin = "Muffin";
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag(killItemTag)) return;
+        if (!collision.gameObject.CompareTag(muffin)) return;
 
         EnemyMovementController movement = GetComponent<EnemyMovementController>();
         if (movement != null)
