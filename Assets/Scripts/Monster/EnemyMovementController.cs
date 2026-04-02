@@ -283,7 +283,7 @@ public class EnemyMovementController : MonoBehaviour
         isDead = true;
 
         StopAllCoroutines();
-        //any death animation
-        gameObject.SetActive(false);   // or Destroy
+        //death animation
+        gameObject.SetActive(false);   // idk what the diff is if u destroy
     }
 }
