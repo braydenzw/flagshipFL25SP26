@@ -12,6 +12,7 @@ public class PlayerInteraction : MonoBehaviour
     public float pickupRange = 6f;
     public Transform holdPoint;
     public float maxDoorHoldDistance = 4f;
+    [SerializeField] float mouse_sensitivity = 8f;
 
     [Header("Throw Settings")]
     public float minThrowPower = 1f;
@@ -60,7 +61,7 @@ public class PlayerInteraction : MonoBehaviour
 
             float mouseX = -Input.GetAxis("Mouse X");
             float mouseY = -Input.GetAxis("Mouse Y");
-            float mouseMovement = mouseX + mouseY;
+            float mouseMovement = mouseX + mouseY * mouse_sensitivity;
 
             currentlyHeldDoor.ManipulateDoor(mouseMovement);
             return;
