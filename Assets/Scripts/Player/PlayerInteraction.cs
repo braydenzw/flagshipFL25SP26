@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    //你好
     [Header("Interaction Settings")]
     public Transform playerCamera;
-    public float pickupRange = 3f;
+    public float pickupRange = 6f;
     public Transform holdPoint;
     public float maxDoorHoldDistance = 4f;
+    [SerializeField] float mouse_sensitivity = 8f;
 
     [Header("Throw Settings")]
     public float minThrowPower = 1f;
@@ -57,13 +61,14 @@ public class PlayerInteraction : MonoBehaviour
 
             float mouseX = -Input.GetAxis("Mouse X");
             float mouseY = -Input.GetAxis("Mouse Y");
-            float mouseMovement = mouseX + mouseY;
+            float mouseMovement = mouseX + mouseY * mouse_sensitivity;
 
             currentlyHeldDoor.ManipulateDoor(mouseMovement);
             return;
         }
 
-        // Pickup controls
+        /*
+        // interact with interactables (left mouse button)
         if (heldItem == null)
         {
             RaycastHit hit;
@@ -95,9 +100,37 @@ public class PlayerInteraction : MonoBehaviour
                         interactable.Interact();
                     }
                 }
+            } 
+        */
+        if (heldItem == null && Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, pickupRange))
+            {
+                Door doorScript = hit.transform.GetComponentInParent<Door>();
+                IInteractable interactable = hit.transform.GetComponent<IInteractable>();
+                ShadowPuzzleManager shadow_puzzle = hit.transform.GetComponent<ShadowPuzzleManager>();
+
+                if (hit.transform.GetComponent<Item>())
+                {
+                    PickupItem(hit.transform.gameObject);
+                } else if (doorScript) 
+                {
+                    currentlyHeldDoor = doorScript;
+                    UpdateInteractionImage(4);
+                } else if (interactable != null)
+                {
+                    interactable.Interact();
+                } else if (shadow_puzzle != null)
+                {
+                    if (shadow_puzzle.enabled == false)
+                    {
+                        shadow_puzzle.enabled = true;
+                        shadow_puzzle.TogglePuzzle();
+                    } 
+                }
             }
         }
-
         else
         {
             HandleThrowingLogic();
@@ -233,5 +266,5 @@ public class PlayerInteraction : MonoBehaviour
         else if (isHolding == 4) { 
             interactionStateImage.texture = doorGrabTexture; // Door-grabbing hand
             }
-        }
+    }
 }

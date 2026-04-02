@@ -63,7 +63,7 @@ public class TimeTravelManager : MonoBehaviour
             scrollTotal += scrollAmount;
             noScrollTime = 0;
         }
-        Debug.Log(scrollTotal);
+        //Debug.Log(scrollTotal);
         if (scrollTotal > scrollNecessary)
         {
             timeTravelDistance--;
@@ -84,7 +84,7 @@ public class TimeTravelManager : MonoBehaviour
         travelDestinationText.text = "Time Destination: " + t.ToString(@"mm\:ss");
 
         // Check time travel button
-        if (Input.GetKeyDown(KeyCode.LeftShift)) timeTravelCalled = true;
+        if (Input.GetKeyDown(KeyCode.T)) timeTravelCalled = true;
     }
 
     // Sets time of clock
@@ -134,5 +134,10 @@ public class TimeTravelManager : MonoBehaviour
         SetClock();
         timeTravelCalled = false;
         timeTravelDistance = 0;
+    }
+
+    public float getCurrentTime()
+    {
+        return currentTime;
     }
 }
