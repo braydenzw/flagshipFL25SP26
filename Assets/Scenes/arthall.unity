@@ -3891,7 +3891,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: ab1452b39d071d14ab7cb1b3ffb3b7c2, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 05e38cc1dd988a14096aa812e91fc5a8, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &160803347
 GameObject:
@@ -6308,7 +6308,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 559ac2d8e7d71e44d848d49a6563d425, type: 2}
   m_BuildHeightMesh: 0
 --- !u!64 &256670960
 MeshCollider:
@@ -15224,7 +15224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8632055958874330854, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 422
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 8879528566716807029, guid: 95b3ac5b6871b7444b8ada12540214c5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16601,7 +16601,7 @@ GameObject:
   - component: {fileID: 562972875}
   m_Layer: 0
   m_Name: "\u65F6\u95F4\u5996\u602A"
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
