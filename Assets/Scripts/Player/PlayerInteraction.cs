@@ -6,7 +6,10 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerInteraction : MonoBehaviour
 {
+<<<<<<< HEAD:Assets/Scripts/Player/PlayerInteraction.cs
     //你好
+=======
+>>>>>>> parent of ba77dae (puzzle lock):Assets/Scripts/PlayerInteraction.cs
     [Header("Interaction Settings")]
     public Transform playerCamera;
     public float pickupRange = 6f;
@@ -131,6 +134,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
+
         else
         {
             HandleThrowingLogic();
@@ -214,12 +218,15 @@ public class PlayerInteraction : MonoBehaviour
         StartCoroutine(ResetInteractionImage(0.5f));
     }
 
+<<<<<<< HEAD:Assets/Scripts/Player/PlayerInteraction.cs
     private IEnumerator ResetInteractionImage(float time)
     {
         yield return new WaitForSeconds(time);
         UpdateInteractionImage(1);
     }
 
+=======
+>>>>>>> parent of ba77dae (puzzle lock):Assets/Scripts/PlayerInteraction.cs
     void DropItem()
     {
         if (heldItemRb != null)
@@ -266,5 +273,9 @@ public class PlayerInteraction : MonoBehaviour
         else if (isHolding == 4) { 
             interactionStateImage.texture = doorGrabTexture; // Door-grabbing hand
             }
+<<<<<<< HEAD:Assets/Scripts/Player/PlayerInteraction.cs
     }
+=======
+        }
+>>>>>>> parent of ba77dae (puzzle lock):Assets/Scripts/PlayerInteraction.cs
 }
