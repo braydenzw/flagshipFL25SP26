@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [Header("State")]
+    public bool canInteract = true;
+
     [Header("Interaction Settings")]
     public Transform playerCamera;
     public float pickupRange = 3f;
@@ -42,6 +45,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        if (!canInteract) return;
+
         // Door controls
         if (currentlyHeldDoor != null)
         {
@@ -88,7 +93,6 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
-
         else
         {
             HandleThrowingLogic();
@@ -107,7 +111,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isCharging = true;
             currentChargeTime = 0f;
-            if (chargeBar != null) chargeBar.gameObject.SetActive(true);
+            if (chargeBar != null)
+            {
+                chargeBar.gameObject.SetActive(true);
+            }
         }
 
         if (isCharging)
@@ -130,7 +137,10 @@ public class PlayerInteraction : MonoBehaviour
     private void CancelCharge()
     {
         isCharging = false;
-        if (chargeBar != null) chargeBar.gameObject.SetActive(false);
+        if (chargeBar != null)
+        {
+            chargeBar.gameObject.SetActive(false);
+        }
     }
 
     void PickupItem(GameObject item)
@@ -171,7 +181,7 @@ public class PlayerInteraction : MonoBehaviour
         UpdateInteractionImage(3);
     }
 
-    void DropItem()
+    public void DropItem()
     {
         if (heldItemRb != null)
         {
@@ -185,7 +195,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private void ResetItemReferences()
     {
-        if (heldItem == null) return;
+        if (heldItem == null)
+            {
+            return;
+            }
 
         heldItem.transform.SetParent(null);
 
@@ -200,22 +213,47 @@ public class PlayerInteraction : MonoBehaviour
 
     void UpdateInteractionImage(int isHolding)
     {
-        if (interactionStateImage == null)
-        {
-            return;
-            }
+        if (interactionStateImage == null) return;
 
-        if (isHolding == 1) { 
-            interactionStateImage.texture = emptyHandTexture; // Idle hands
+        if (isHolding == 0)
+        {
+            interactionStateImage.texture = null;
+            interactionStateImage.color = Color.clear;
+        }
+        else
+        {
+            interactionStateImage.color = Color.white;
+            if (isHolding == 1)
+            {
+                interactionStateImage.texture = emptyHandTexture;
             }
-        else if (isHolding == 2) { 
-            interactionStateImage.texture = holdingItemTexture; // Grabbing hands
+            else if (isHolding == 2)
+            {
+                interactionStateImage.texture = holdingItemTexture;
             }
-        else if (isHolding == 3) { 
-            interactionStateImage.texture = throwingItemTexture; // Throwing hand
+            else if (isHolding == 3)
+            {
+                interactionStateImage.texture = throwingItemTexture;
             }
-        else if (isHolding == 4) { 
-            interactionStateImage.texture = doorGrabTexture; // Door-grabbing hand
+            else if (isHolding == 4)
+            {
+                interactionStateImage.texture = doorGrabTexture;
             }
         }
+    }
+    public void SetInteractionState(bool isActive)
+    {
+        canInteract = isActive;
+        if (!isActive)
+        {
+            if (heldItem != null) DropItem();
+            if (currentlyHeldDoor != null) currentlyHeldDoor = null;
+            CancelCharge();
+            UpdateInteractionImage(0);
+        }
+        else
+        {
+            UpdateInteractionImage(1);
+        }
+    }
 }

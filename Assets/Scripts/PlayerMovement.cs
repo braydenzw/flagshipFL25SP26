@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("State")]
+    public bool canMove = true;
+
     [Header("Movement")]
     public Transform orientation;
     public float moveSpeed;
@@ -22,8 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Detection")]
     public float playerHeight;
     public LayerMask ground;
-    
-    // Make sure to set walking surfaces to a layer called "ground". This is simply to prevent rapid air jumping.
+
     private bool isGrounded;
 
     [Header("Jumping")]
@@ -47,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -62,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Ground Detection
@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            rb.drag = 1f;
+            rb.drag = 0f;
         }
     }
 
@@ -90,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void MyInput()
     {
+        if (!canMove) return;
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -120,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         float targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
-        
+
         if (isGrounded)
         {
             rb.AddForce(moveDirection.normalized * targetSpeed * 10f, ForceMode.Force);
@@ -133,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleStamina()
     {
-        if (isSprinting)
+        if (isSprinting && canMove)
         {
             currentStamina -= staminaDrain * Time.deltaTime;
             if (currentStamina < 0)
@@ -160,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
     private void SpeedControl()
     {
         float targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
-        
+
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // Limits velocity if necessary
@@ -174,12 +176,23 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     private void JumpReset()
     {
         isJumpReady = true;
+    }
+
+    public void SetMovementState(bool isActive)
+    {
+        canMove = isActive;
+        if (!isActive)
+        {
+            horizontalInput = 0;
+            verticalInput = 0;
+            isSprinting = false;
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
     }
 }

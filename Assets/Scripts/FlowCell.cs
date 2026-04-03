@@ -13,6 +13,11 @@ public class FlowCell : MonoBehaviour
 
     void Awake()
     {
+        if (isNode)
+        {
+            isOccupied = true;
+        }
+
         rend = GetComponent<Renderer>();
         if (isNode && cellColor != Color.clear)
         {
