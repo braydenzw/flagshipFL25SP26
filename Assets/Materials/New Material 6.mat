@@ -7,15 +7,25 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Art/Materials/WallPlaceholder.mat
   m_Name: WallPlaceholder
+=======
+<<<<<<<< HEAD:Assets/Art/Materials/Monster.mat
+  m_Name: Monster
+>>>>>>> parent of e8b7d72 (material Rename)
 ========
   m_Name: New Material 6
 >>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 6.mat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
+<<<<<<< HEAD
   m_ValidKeywords: []
+=======
+  m_ValidKeywords:
+  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+>>>>>>> parent of e8b7d72 (material Rename)
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -69,6 +79,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+<<<<<<< HEAD
     - _GlossMapScale: 1
     - _Glossiness: 0.28
     - _GlossyReflections: 1
@@ -77,11 +88,25 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
+=======
+    - _GlossMapScale: 0.81
+    - _Glossiness: 0.48
+    - _GlossyReflections: 1
+    - _Metallic: 0.2
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 1
+>>>>>>> parent of e8b7d72 (material Rename)
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+<<<<<<< HEAD
     - _Color: {r: 0.21698111, g: 0.07266821, b: 0.07925699, a: 1}
+=======
+    - _Color: {r: 0.51235247, g: 0.33187968, b: 0.6226415, a: 1}
+>>>>>>> parent of e8b7d72 (material Rename)
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

@@ -8,10 +8,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Name: New Material 4
 =======
 <<<<<<<< HEAD:Assets/Materials/CreatureMaterial.mat
   m_Name: CreatureMaterial
+========
+  m_Name: New Material 4
+>>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 4.mat
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+<<<<<<<< HEAD:Assets/Materials/dog1.mat
+  m_Name: dog1
 ========
   m_Name: New Material 4
 >>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 4.mat
@@ -50,6 +58,7 @@ Material:
     - _EmissionMap:
         m_Texture: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
         m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -60,6 +69,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 57a8176ec6e68fb41906dcfa67492c74, type: 3}
         m_Scale: {x: 1, y: 1}
 >>>>>>> parent of e8b7d72 (material Rename)
         m_Offset: {x: 0, y: 0}
@@ -83,6 +99,7 @@ Material:
     - _DstBlend: 0
     - _GlossMapScale: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _Metallic: 0
@@ -90,6 +107,11 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0.4
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
 >>>>>>> parent of e8b7d72 (material Rename)
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -101,9 +123,13 @@ Material:
     - _ZWrite: 1
     m_Colors:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - _Color: {r: 1, g: 0.78431374, b: 1, a: 1}
 =======
     - _Color: {r: 0.8962264, g: 0.30860624, b: 0.30860624, a: 1}
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
 >>>>>>> parent of e8b7d72 (material Rename)
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
