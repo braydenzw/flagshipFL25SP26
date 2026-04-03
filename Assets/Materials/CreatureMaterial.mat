@@ -7,7 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Materials/CreatureMaterial.mat
   m_Name: CreatureMaterial
+========
+  m_Name: New Material 4
+>>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 4.mat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
