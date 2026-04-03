@@ -7,7 +7,27 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<<< HEAD:Assets/Materials/New Material 3.mat
   m_Name: New Material 3
+========
+  m_Name: New Material
+>>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material.mat
+=======
+<<<<<<<< HEAD:Assets/TestMaterial.mat
+  m_Name: TestMaterial
+========
+  m_Name: New Material 3
+>>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 3.mat
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+<<<<<<<< HEAD:Assets/Art/Materials/MonsterEyes.mat
+  m_Name: MonsterEyes
+========
+  m_Name: New Material 3
+>>>>>>>> parent of e8b7d72 (material Rename):Assets/Materials/New Material 3.mat
+>>>>>>> parent of e8b7d72 (material Rename)
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -78,6 +98,14 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+<<<<<<< HEAD
+<<<<<<< HEAD
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+=======
+    - _Color: {r: 0.8490566, g: 0.21226415, b: 0.67460483, a: 1}
+>>>>>>> parent of e8b7d72 (material Rename)
+=======
+    - _Color: {r: 1, g: 0.5446175, b: 0.3915094, a: 1}
+>>>>>>> parent of e8b7d72 (material Rename)
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
