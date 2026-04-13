@@ -32,7 +32,7 @@ public class EnemyMovementControllerRevamped : MonoBehaviour
     private Vector3 last_known_player_pos;
 
     // parameters
-    private float chase_time = 5f;
+    [SerializeField] float chase_time = 5f;
     private float search_time = 5f;
     private float wander_time = 3f;
     private float wander_radius = 10f;
