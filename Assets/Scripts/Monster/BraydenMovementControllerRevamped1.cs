@@ -77,7 +77,7 @@ public class BraydenMovementControllerRevamped : MonoBehaviour
             case states.chasing:
                 if (!is_chasing) StartCoroutine(ChasePlayer());
                 float distance_to_player = Vector3.Distance(player.position, transform.position);
-                Debug.Log("distance to player: " + distance_to_player);
+                //Debug.Log("distance to player: " + distance_to_player);
                 if (distance_to_player <= attack_range)
                 {
                     if (!is_attacking) StartCoroutine(Attack());
