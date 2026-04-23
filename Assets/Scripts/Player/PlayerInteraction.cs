@@ -33,6 +33,7 @@ public class PlayerInteraction : MonoBehaviour
     public Texture doorGrabTexture;
     public Slider chargeBar;
 
+
     void Start()
     {
         UpdateInteractionImage(1);

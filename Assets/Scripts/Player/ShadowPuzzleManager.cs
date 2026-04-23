@@ -29,9 +29,18 @@ public class ShadowPuzzleManager : MonoBehaviour
     [SerializeField] GameObject player_camera_root;
     [SerializeField] TextMeshProUGUI instructions; // make sure this is disabled on the instruction UI (DON'T disable the UI GameObject itself)
 
-    [Header("the object TO compare to")]
+    [Header("The object TO compare to")]
     [SerializeField] GameObject o2; 
-    private float margin_of_error = 10f; // this seems to work alright
+    private float margin_of_error = 10f; // exact match tolerance
+    
+    // --- NEW SPOTLIGHT VARIABLES ---
+    [Header("Spotlight Settings")]
+    [SerializeField] private Light puzzleSpotlight; // Drag your spotlight here in the inspector
+    [SerializeField] private float close_margin_of_error = 45f; // Tolerance for turning yellow
+    [SerializeField] private Color defaultColor = Color.white;
+    [SerializeField] private Color closeColor = Color.yellow;
+    [SerializeField] private Color correctColor = Color.green;
+    // -------------------------------
 
     private void Awake()
     {
@@ -51,18 +60,31 @@ public class ShadowPuzzleManager : MonoBehaviour
         if (isPlaying)
         {
             RotateObj();
-
-            if (DoesRotationMatch(transform.rotation, o2.transform.rotation))
-            {
-                Debug.Log("rotation matches");
-            }
+            CheckShadowMatch(); // Call the new method here
         }
     }
 
-    private bool DoesRotationMatch(Quaternion rotation1, Quaternion rotation2)
+    // --- NEW METHOD FOR CHECKING MATCH AND COLORS ---
+    private void CheckShadowMatch()
     {
-        float diff = Quaternion.Angle(rotation1, rotation2); // difference in angles
-        return diff < margin_of_error;
+        // Calculate difference in angles just once per frame
+        float diff = Quaternion.Angle(transform.rotation, o2.transform.rotation); 
+
+        if (diff <= margin_of_error)
+        {
+            puzzleSpotlight.color = correctColor;
+            Debug.Log("rotation matches");
+            
+            // You can also trigger your "Puzzle Solved" logic here!
+        }
+        else if (diff <= close_margin_of_error)
+        {
+            puzzleSpotlight.color = closeColor;
+        }
+        else
+        {
+            puzzleSpotlight.color = defaultColor;
+        }
     }
 
     // provides three axes of rotation

@@ -76,6 +76,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0630df170aa314e48b5944b3080da0fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7945206188775959321}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0630df170aa314e48b5944b3080da0fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1201637226369580518}
   m_SourcePrefab: {fileID: 100100000, guid: 0630df170aa314e48b5944b3080da0fe, type: 3}
 --- !u!1 &1004161677670135275 stripped
 GameObject:
@@ -108,7 +111,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!195 &291107063647919632
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -145,7 +148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   attackRange: 5
-  jumpForce: 5
+  jumpForce: 8
+  missRecoveryTime: 1.5
 --- !u!65 &7945206188775959321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -167,3 +171,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.6855091, z: 1.4256783}
   m_Center: {x: 0, y: 0.27936012, z: -0.021831512}
+--- !u!114 &1201637226369580518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004161677670135275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e54c1a8d70b20f448fb7d3ed96ab001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
